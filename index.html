@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex Pro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <nav class="navbar bg-primary text-white shadow-sm">
+        <div class="container">
+            <h1 class="mx-auto mb-0">
+                <i class="fa-solid fa-paw me-2"></i>Pokédex Pro
+            </h1>
+        </div>
+    </nav>
+
+    <div class="container mt-4 main-container bg-light rounded-3 p-4 shadow">
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <input type="text" id="pokemonName" class="form-control shadow-sm"
+                        placeholder="Enter Pokémon name (e.g., pikachu)">
+                    <button id="fetchData" class="btn btn-success shadow-sm">
+                        <i class="fas fa-search me-2"></i>Search
+                    </button>
+                </div>
+                <div class="form-text text-muted mt-2">Enter the name of the Pokémon you want to look up.</div>
+            </div>
+        </div>
+
+        <div class="loading d-none text-center my-5">
+            <div class="spinner-border text-success" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2 text-muted">Fetching Pokémon data...</p>
+        </div>
+
+        <div id="pokemonData" class="d-none">
+            <h2 id="pokemonNameDisplay" class="text-center text-primary display-4 mb-3 fw-bold"></h2>
+            <div class="text-center mb-4">
+                <img id="pokemonImage" src="" alt="Pokemon Image" class="pokemon-image img-fluid rounded shadow-sm"
+                    style="max-width: 250px;">
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-2 g-4 mb-4">
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-success text-white rounded-top">
+                            <h5 class="card-title m-0"><i class="fa-solid fa-bolt me-2"></i>Abilities</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul id="abilitiesList" class="list-group list-group-flush"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-info text-white rounded-top">
+                            <h5 class="card-title m-0"><i class="fa-solid fa-link me-2"></i>Evolution Chain</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul id="evolutionChain" class="list-group list-group-flush"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-2 g-4 mb-4">
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-warning text-dark rounded-top">
+                            <h5 class="card-title m-0"><i class="fa-solid fa-venus-mars me-2"></i>Gender Rate</h5>
+                        </div>
+                        <div class="card-body">
+                            <p id="genderRate"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-secondary text-white rounded-top">
+                            <h5 class="card-title m-0"><i class="fa-solid fa-chart-line me-2"></i>Growth Rate</h5>
+                        </div>
+                        <div class="card-body">
+                            <p id="growthRate"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-primary text-white rounded-top">
+                    <h5 class="card-title m-0"><i class="fa-solid fa-leaf me-2"></i>Natures</h5>
+                </div>
+                <div class="card-body">
+                    <ul id="naturesList" class="list-group list-group-flush"></ul>
+                </div>
+            </div>
+
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-danger text-white rounded-top">
+                    <h5 class="card-title m-0"><i class="fa-solid fa-dumbbell me-2"></i>Stats</h5>
+                </div>
+                <div class="card-body">
+                    <ul id="statsList" class="list-group list-group-flush"></ul>
+                </div>
+            </div>
+
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-info text-white rounded-top">
+                    <h5 class="card-title m-0"><i class="fa-solid fa-tags me-2"></i>Types</h5>
+                </div>
+                <div class="card-body">
+                    <ul id="typesList" class="list-group list-group-flush"></ul>
+                </div>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-warning text-dark rounded-top">
+                            <h5 class="card-title m-0"><i class="fa-solid fa-shield-alt me-2"></i>Weaknesses</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul id="weaknessesList" class="list-group list-group-flush"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-success text-white rounded-top">
+                            <h5 class="card-title m-0"><i class="fa-solid fa-thumbs-up me-2"></i>Type Advantages</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul id="typeAdvantagesList" class="list-group list-group-flush"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-danger text-white rounded-top">
+                            <h5 class="card-title m-0"><i class="fa-solid fa-thumbs-down me-2"></i>Type Disadvantages
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <ul id="typeDisadvantagesList" class="list-group list-group-flush"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-primary text-white rounded-top">
+                    <h5 class="card-title m-0"><i class="fa-solid fa-list-alt me-2"></i>Moves</h5>
+                </div>
+                <div class="card-body">
+                    <ul id="movesList" class="list-group list-group-flush"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-light text-center py-3 mt-auto shadow-sm">
+        <p class="mb-0">© 2025 Pokédex Pro. Data from <a href="https://pokeapi.co/" target="_blank"
+                class="text-warning">PokéAPI</a></p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        // Configure Toastr
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+    </script>
+</body>
+
+</html>
